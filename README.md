@@ -1,6 +1,10 @@
-## Prerequisites
+## Installation
 
-The minimum required PHP version is 7.1.0.
+You can install the package via composer.
+
+```bash
+composer require onetechasia/laravel-export-docs
+```
 
 ## Requirements
 

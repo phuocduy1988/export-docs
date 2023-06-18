@@ -275,6 +275,6 @@ class BaseController extends LaravelController
 
     public function writeLogException($e): void
     {
-        writeLogException($e);
+        moduleWriteLogException($e);
     }
 }

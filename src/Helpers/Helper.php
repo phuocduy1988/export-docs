@@ -1,13 +1,13 @@
 <?php
 
-if (!function_exists('writeLogException')) {
+if (!function_exists('moduleWriteLogException')) {
     /**
      * write log when exception
      *
      * @param  \Exception  $e
      * @return void
      */
-    function writeLogException(Exception $e): void
+    function moduleWriteLogException(Exception $e): void
     {
         $content = '';
         $r = explode('#0', $e->getTraceAsString());
@@ -19,17 +19,17 @@ if (!function_exists('writeLogException')) {
     }
 }
 
-if (!function_exists('dateNow')) {
+if (!function_exists('moduleDateNow')) {
     /**
      * Date format YYYY-MM-DD H:M:S
      */
-    function dateNow($format = 'Y-m-d H:i:s'): string
+    function moduleDateNow($format = 'Y-m-d H:i:s'): string
     {
         return \Carbon\Carbon::now(config('app.timezone', 'Asia/Tokyo'))->format($format);
     }
 }
 
-if (!function_exists('logInfo')) {
+if (!function_exists('moduleLogInfo')) {
     /**
      * @param $log
      * Quick write log info
@@ -38,43 +38,13 @@ if (!function_exists('logInfo')) {
      *
      * @Author DuyLBP
      */
-    function logInfo($log)
+    function moduleLogInfo($log)
     {
         \Log::channel(config('logging.default'))->info('================================================');
         \Log::channel(config('logging.default'))->info($log);
     }
 }
 
-if (!function_exists('forceJsonError')) {
-    function forceJsonError($error, int $status = \Symfony\Component\HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR)
-    {
-        $message = $error;
-        $file = '';
-        $line = '';
-        if (is_object($error)) {
-            write_log_exception($error);
-            $message = $error->getMessage();
-            $file = $error->getFile();
-            $line = $error->getLine();
-        }
-
-        header('Access-Control-Allow-Origin: *');
-        header('Access-Control-Allow-Methods: *');
-        header('Access-Control-Allow-Headers: *');
-
-        //Return http json
-        $response = response()->json(
-            [
-                'message' => $message,
-                'file' => $file,
-                'line' => $line,
-            ],
-            $status,
-        );
-        $response->send();
-        exit();
-    }
-}
 if (!function_exists('authParam')) {
     function authParam($param)
     {

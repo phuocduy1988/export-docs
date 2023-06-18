@@ -59,7 +59,7 @@ class ExportDocController extends BaseController
                 }
             }
 
-            $fileName = $database . dateNow('YmdHi') . '.xlsx';
+            $fileName = $database . moduleDateNow('YmdHi') . '.xlsx';
             $res = (new DatabaseExport($sheets))->store($fileName, 'local');
             if (!$res) {
                 $this->jsonErrorMessage(trans('errors.unexpected_error'));
