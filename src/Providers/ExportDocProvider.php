@@ -9,7 +9,10 @@
 namespace Onetech\ExportDocs\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Onetech\ExportDocs\Commands\APISpecGeneratorCommand;
+use Onetech\ExportDocs\Commands\DatabaseGeneratorCommand;
 use Onetech\ExportDocs\Commands\DBDiagramCommand;
+use Onetech\ExportDocs\Commands\SequenceGeneratorCommand;
 
 /**
  * Class AwsCognitoServiceProvider.
@@ -27,10 +30,16 @@ class ExportDocProvider extends ServiceProvider
         // Load the helper functions
         require_once realpath(__DIR__ . '/../Helpers/Helper.php');
 
-        $this->app->bind('command.db:diagram', DBDiagramCommand::class);
+        $this->app->bind('command.docs:diagram', DBDiagramCommand::class);
+        $this->app->bind('command.docs:api-spec', APISpecGeneratorCommand::class);
+        $this->app->bind('command.docs:database', DatabaseGeneratorCommand::class);
+        $this->app->bind('command.docs:sequence', SequenceGeneratorCommand::class);
 
         $this->commands([
-            'command.db:diagram',
+            'command.docs:diagram',
+            'command.docs:api-spec',
+            'command.docs:database',
+            'command.docs:sequence',
         ]);
     }
 

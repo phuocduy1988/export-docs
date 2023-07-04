@@ -15,16 +15,17 @@ You can install Graphviz on MacOS via homebrew:
 ```bash
 brew install graphviz
 ```
-
-Or, if you are using Homestead:
-
 ```bash
-sudo apt-get install graphviz
+php artisan docs:diagram output-optional.png
 ```
 
+**Export API document**
 ```bash
-php artisan db:diagram
+php artisan docs:api-spec url-collection-postman-required --environment=path/postman-environment.json
 ```
+_Note that: postman enviroment must include token login_
+
+**Export database document**
 ```bash
-php artisan db:diagram output.png
+php artisan docs:database --filename=name-of-file-optional
 ```

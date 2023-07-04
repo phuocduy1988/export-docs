@@ -1,6 +1,6 @@
 <?php
 
-namespace Onetech\Pattern\Services;
+namespace Onetech\ExportDocs\Services;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use ReflectionClass;
 
-class BaseGeneratorService extends ParserService
+class BaseGeneratorService
 {
     public function cleanup(): void
     {

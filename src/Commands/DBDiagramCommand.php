@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Onetech\ExportDocs\Enums\ExportDocEnum;
 use Onetech\ExportDocs\Models\Model as GraphModel;
 use Onetech\ExportDocs\Services\Diagrams\GraphBuilder;
 use Onetech\ExportDocs\Services\Diagrams\RelationFinder;
@@ -23,9 +24,9 @@ class DBDiagramCommand extends Command
 {
     const FORMAT_TEXT = 'text';
 
-    const DEFAULT_FILENAME = 'graph';
+    const DEFAULT_FILENAME = 'db-diagram';
 
-    protected $signature = 'db:diagram {filename?} {--format=png}';
+    protected $signature = 'docs:diagram {filename?} {--format=png}';
 
     /**
      * The console command description.
@@ -96,10 +97,14 @@ class DBDiagramCommand extends Command
             return;
         }
 
-        $graph->export($this->option('format'), $this->getOutputFileName());
+        $path =  storage_path(ExportDocEnum::APP_PATH->value . ExportDocEnum::EXPORT_PATH->value . ExportDocEnum::DATABASE_PATH->value);
+        if(!is_dir($path)) {
+            File::makeDirectory($path, 0755, true);
+        }
+        $graph->export($this->option('format'), $path . $this->getOutputFileName());
 
         $this->info(PHP_EOL);
-        $this->info('Wrote diagram to ' . $this->getOutputFileName());
+        $this->info('Wrote diagram to ' . $path . $this->getOutputFileName());
     }
 
     protected function getModelsThatShouldBeInspected(): Collection

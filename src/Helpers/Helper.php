@@ -81,3 +81,67 @@ if (!function_exists('extractArrayValueFromEnumCases')) {
         return $newArray;
     }
 }
+
+if (!function_exists('arrayCastRecursive')) {
+    function arrayCastRecursive($array)
+    {
+        if (is_array($array)) {
+            foreach ($array as $key => $value) {
+                if (is_array($value)) {
+                    $array[$key] = arrayCastRecursive($value);
+                }
+                if ($value instanceof stdClass) {
+                    $array[$key] = arrayCastRecursive((array) $value);
+                }
+            }
+        }
+        if ($array instanceof stdClass) {
+            return arrayCastRecursive((array) $array);
+        }
+
+        return $array;
+    }
+}
+
+if (!function_exists('formatSheetName')) {
+    function formatSheetName($originName): string
+    {
+        $originName = preg_replace("/\s+/", '', $originName);
+        $originName = preg_replace('/{[^}]+}/', '', $originName);
+        $originName = preg_replace("/[^#\w]/", '_', $originName);
+        $originName = preg_replace('/_+/', '_', $originName);
+
+        return rtrim($originName, '_');
+    }
+}
+
+if (!function_exists('formatSheetId')) {
+    function formatSheetId($sheetIndex, int $digit = 3, $padString = '0'): string
+    {
+        return str_pad($sheetIndex, $digit, $padString, STR_PAD_LEFT);
+    }
+}
+
+if (!function_exists('formatPath')) {
+    function formatPath($url): string
+    {
+        $paths = explode('/', $url);
+
+        foreach ($paths as $index => &$path) {
+            if (is_numeric($path)) {
+                if (isset($paths[$index - 1])) {
+                    $name = $paths[$index - 1];
+                    if (!\Illuminate\Support\Str::contains($name, 'Id')) {
+                        $name .= 'Id';
+                    }
+                    $name = \Illuminate\Support\Str::camel($name);
+                    $path = "{{$name}}";
+                } else {
+                    $path = '{id}';
+                }
+            }
+        }
+
+        return implode('/', $paths);
+    }
+}

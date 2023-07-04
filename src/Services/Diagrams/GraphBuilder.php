@@ -5,6 +5,7 @@ namespace Onetech\ExportDocs\Services\Diagrams;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Onetech\ExportDocs\Models\Model;
 use Onetech\ExportDocs\Models\ModelRelation;
 use phpDocumentor\GraphViz\Graph;
@@ -61,6 +62,19 @@ class GraphBuilder
 
         if (config('export-docs.use_db_schema')) {
             $columns = $this->getTableColumnsFromModel($model);
+            //modified column names
+            $columnModified = [];
+            foreach ($columns as $column) {
+                if(count($columnModified) > 7) {
+                    continue;
+                }
+                // if(Str::contains($column->getName(), 'id')){
+                // }
+                $columnModified[] = $column;
+            }
+
+            $columns = $columnModified;
+
             foreach ($columns as $column) {
                 $label = $column->getName();
                 if (config('export-docs.use_column_types')) {
@@ -107,7 +121,10 @@ class GraphBuilder
 
         /** @var ModelRelation $relation */
         foreach ($model->getRelations() as $relation) {
-            if ($relation->getType() === 'HasMany') {
+            if ($relation->getType() != 'BelongsTo') {
+                continue;
+            }
+            if(in_array($relation->getName(), ['createdBy', 'updatedBy'])) {
                 continue;
             }
             $relatedModelNode = $this->graph->findNode($relation->getModelNodeName());

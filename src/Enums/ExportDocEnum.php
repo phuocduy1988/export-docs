@@ -12,4 +12,8 @@ enum ExportDocEnum: string
     case BOOLEAN = 'boolean';
     case EMAIL = 'email';
     case PHONE = 'phone';
+    case APP_PATH = 'app/';
+    case EXPORT_PATH = 'export/';
+    case DATABASE_PATH = 'database/';
+    case API_PATH = 'api/';
 }

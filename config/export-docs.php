@@ -12,13 +12,27 @@ return [
         ],
     ],
     'ignore' => [
-        // User::class,
-        // Post::class => [
-        //     'user'
-        // ]
         \App\Models\PasswordReset::class,
         \App\Models\BaseModel::class,
         \App\Models\PersonalAccessToken::class,
+        \App\Models\User::class,
+    ],
+    'database_ignore' => [
+        'failed_jobs',
+        'generators',
+        'migrations',
+        'model_has_permissions',
+        'jobs',
+        'job_batches',
+        'model_has_roles',
+        'password_resets',
+        'patterns',
+        'pattern_apis',
+        'permissions',
+        'personal_access_tokens',
+        'role_has_permissions',
+        'roles',
+        'users',
     ],
 
     /*
@@ -109,7 +123,7 @@ return [
         'BelongsTo' => [
             'dir' => 'both',
             'color' => '#F77F00',
-            'arrowhead' => 'tee',
+            'arrowhead' => 'dot',
             'arrowtail' => 'inv',
         ],
         'HasMany' => [
