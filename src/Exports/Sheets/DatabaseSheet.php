@@ -37,8 +37,11 @@ class DatabaseSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, 
             'A' => 18,
             'B' => 15,
             'D' => 8,
-            'F' => 19,
+            'F' => 8,
             'G' => 18,
+            'H' => 20,
+            'I' => 18,
+            'J' => 35,
         ];
     }
 
@@ -59,10 +62,10 @@ class DatabaseSheet implements WithTitle, FromView, WithStyles, ShouldAutoSize, 
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->mergeCells('B1:H1');
-        $sheet->mergeCells('B2:H2');
-        $sheet->mergeCells('B3:H3');
-        $sheet->mergeCells('B4:H4');
+        $sheet->mergeCells('B1:J1');
+        $sheet->mergeCells('B2:J2');
+        $sheet->mergeCells('B3:J3');
+        $sheet->mergeCells('B4:J4');
         $sheet->getRowDimension(3)->setRowHeight(60);
         $sheet->getRowDimension(4)->setRowHeight(60);
         $sheet->getStyle('A3')->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);

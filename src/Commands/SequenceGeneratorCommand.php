@@ -9,6 +9,7 @@ use Onetech\ExportDocs\Services\ParserService;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\ClassConstFetch;
+use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Stmt\Expression;
@@ -50,9 +51,7 @@ class SequenceGeneratorCommand extends Command
 
                     foreach ($nodeRouteUriList as $nodeRouteUri) {
                         $nodeRouteUriArr = $this->parser->finder->findFirst($nodeRouteUri, function (Node $node) {
-                            if (
-                                $node instanceof Node\Expr\Array_
-                            ) {
+                            if ($node instanceof Node\Expr\Array_) {
                                 return $node;
                             }
                         });
@@ -95,8 +94,29 @@ class SequenceGeneratorCommand extends Command
                         if(!$nodeControllerAction) {
                             continue;
                         }
-                        //Parse controller action from routes
-                        dd($nodeControllerAction);
+                        $nodeTryCatch = $this->parser->finder->findFirst($nodeControllerAction, function (Node $node) {
+                            if ($node instanceof Node\Stmt\TryCatch) {
+                                return $node;
+                            }
+                        });
+                        $stmts = $nodeControllerAction->stmts;
+                        if($nodeTryCatch) {
+                            $stmts = $nodeTryCatch->stmts;
+                        }
+
+                        $this->analyticCode($logicMapping, $stmts);
+
+                        //find method call
+                        $methodCalls = $this->parser->finder->findInstanceOf($stmts, MethodCall::class);
+
+                        foreach ($methodCalls as $methodCall) {
+                            if($methodCall->var->name == 'this') {
+                                //Find in class, traits, extends
+                                $methodName = $methodCall->name->toString();
+                                dd($methodName);
+                            }
+                        }
+
 
                     }
                 }
@@ -104,9 +124,39 @@ class SequenceGeneratorCommand extends Command
         }
     }
 
-    public function analyticClass()
+    public function analyticCode(&$logicMapping, $data)
     {
+        foreach ($data as $node) {
+            if($node instanceof Node\Stmt\If_) {
+                $this->renderCondition($logicMapping, $node->cond);
+                // $this->analyticCode($logicMapping, $node->stmts);
+            }
+        }
+    }
 
+    private function renderCondition(&$logicMapping, $cond)
+    {
+        if(isset($cond->left)) {
+            //Process left
+            if(isset($cond->left->left)) {
+            }
+
+            if(isset($cond->left->right)) {
+
+            }
+        }
+
+        if(isset($cond->right)) {
+            //Process left
+            if(isset($cond->right->left)) {
+            }
+
+            if(isset($cond->right->right)) {
+            }
+        }
+
+        dd(1);
+        //isset($node->cond->left->left->left->left->left->left)
     }
 }
 

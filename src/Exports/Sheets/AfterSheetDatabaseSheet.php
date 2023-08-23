@@ -37,7 +37,7 @@ class AfterSheetDatabaseSheet
             ]
         );
 
-        $event->sheet->getStyle('A1:H4')->applyFromArray(
+        $event->sheet->getStyle('A1:J4')->applyFromArray(
             [
                 'borders' => [
                     'allBorders' => [
@@ -48,7 +48,7 @@ class AfterSheetDatabaseSheet
             ]
         );
 
-        $event->sheet->getStyle("A$cellDb:H$cellDb")->applyFromArray(
+        $event->sheet->getStyle("A$cellDb:J$cellDb")->applyFromArray(
             [
                 'alignment' => [
                     'horizontal' => Alignment::HORIZONTAL_CENTER,
@@ -82,7 +82,15 @@ class AfterSheetDatabaseSheet
             ]
         );
 
-        $event->sheet->getStyle("A$cellDb:H{$endBorder}")->applyFromArray(
+        $event->sheet->getStyle("F$cellDbCenter:F{$endBorder}")->applyFromArray(
+            [
+                'alignment' => [
+                    'horizontal' => Alignment::HORIZONTAL_CENTER,
+                ],
+            ]
+        );
+
+        $event->sheet->getStyle("A$cellDb:J{$endBorder}")->applyFromArray(
             [
                 'borders' => [
                     'allBorders' => [

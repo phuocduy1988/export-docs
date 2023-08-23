@@ -27,6 +27,8 @@
         <th><strong>型</strong></th>
         <th><strong>PK</strong></th>
         <th><strong>NOT NULL</strong></th>
+        <th><strong>UNIQUE</strong></th>
+        <th><strong>FK</strong></th>
         <th><strong>オートインクリメント</strong></th>
         <th><strong>デフォルト値</strong></th>
         <th><strong>説明</strong></th>
@@ -35,11 +37,13 @@
     <tbody>
     @foreach($databases as $database)
         <tr>
-            <td></td>
+            <td>{{ Str::ucfirst(Str::replace('_', ' ', $database['field'])) }}</td>
             <td>{{$database['field']}}</td>
             <td>{{$database['type']}}</td>
             <td>{{$database['key'] === 'PRI' ? '○' : ''}}</td>
             <td>{{$database['null'] === 'NO' ? '○' : ''}}</td>
+            <td>{{in_array($database['key'], ['PRI', 'UNI']) ? '○' : ''}}</td>
+            <td>{{Str::contains($database['field'], '_id') ? 'id|' . Str::plural(Str::replace('_id', '', $database['field']))  : ''}}</td>
             <td>{{$database['extra']}}</td>
             <td>{{$database['default']}}</td>
             <td>{{$database['comment']}}</td>

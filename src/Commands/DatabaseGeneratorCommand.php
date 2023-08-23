@@ -3,6 +3,7 @@
 namespace Onetech\ExportDocs\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Onetech\ExportDocs\Enums\ExportDocEnum;
@@ -55,6 +56,9 @@ class DatabaseGeneratorCommand extends Command
                 ];
             }
         }
+
+        //Generate diagram
+        Artisan::call('docs:diagram');
 
         $fileName = $this->getFileName($database);
         $exporter = new DatabaseExport($sheets);

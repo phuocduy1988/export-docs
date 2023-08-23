@@ -60,12 +60,6 @@ class ExportDocProvider extends ServiceProvider
         $this->mergeConfigFrom($path, 'export-docs');
 
         $this->loadViewsFrom(__DIR__.'/../views', 'docs');
-
-        //Publish data generator
-        $this->publishes([
-            __DIR__.'/../public' => public_path('vendor'),
-        ], 'onetech-export-docs-public');
-
     } //Function ends
 
 }
