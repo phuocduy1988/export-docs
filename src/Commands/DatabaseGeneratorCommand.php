@@ -39,6 +39,7 @@ class DatabaseGeneratorCommand extends Command
             $describeTables = $db->select("SHOW FULL COLUMNS FROM $tableName");
             foreach ($describeTables as $column) {
                 $field = $column->Field;
+                $field = str_replace("\x08","",$field);
                 $type = $column->Type;
                 $null = $column->Null;
                 $key = $column->Key;
