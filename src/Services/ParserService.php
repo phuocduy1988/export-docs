@@ -5,7 +5,7 @@ namespace Onetech\ExportDocs\Services;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
-use Onetech\Pattern\Traits\AstBuilder;
+use Onetech\ExportDocs\Traits\AstBuilder;
 use PhpParser\BuilderFactory;
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;

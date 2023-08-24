@@ -76,11 +76,12 @@ class GraphBuilder
             $columns = $columnModified;
 
             foreach ($columns as $column) {
-                $label = $column->getName();
+                $columnName = str_replace("\x08","",$column->getName());
+                $label = $columnName;
                 if (config('export-docs.use_column_types')) {
                     $label .= ' ('.$column->getType()->getName().')';
                 }
-                $table .= '<tr width="100%"><td port="' . $column->getName() . '" align="left" width="100%"  bgcolor="'.config('export-docs.table.row_background_color').'"><font color="'.config('export-docs.table.row_font_color').'" >' . $label . '</font></td></tr>' . PHP_EOL;
+                $table .= '<tr width="100%"><td port="' . $columnName . '" align="left" width="100%"  bgcolor="'.config('export-docs.table.row_background_color').'"><font color="'.config('export-docs.table.row_font_color').'" >' . $label . '</font></td></tr>' . PHP_EOL;
             }
         }
 
