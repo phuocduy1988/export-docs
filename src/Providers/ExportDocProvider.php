@@ -14,6 +14,11 @@ use Onetech\ExportDocs\Commands\DatabaseGeneratorCommand;
 use Onetech\ExportDocs\Commands\DBDiagramCommand;
 use Onetech\ExportDocs\Commands\SequenceGeneratorCommand;
 
+use OpenAI;
+use OpenAI\Client;
+use OpenAI\Contracts\ClientContract;
+use Onetech\ExportDocs\Exceptions\ApiKeyIsMissing;
+
 /**
  * Class AwsCognitoServiceProvider.
  */
@@ -41,6 +46,24 @@ class ExportDocProvider extends ServiceProvider
             'command.docs:database',
             'command.docs:sequence',
         ]);
+
+        $this->app->singleton(ClientContract::class, static function (): Client {
+            $apiKey = config('export-docs.api_key');
+            $organization = config('export-docs.organization');
+
+            if (! is_string($apiKey) || ($organization !== null && ! is_string($organization))) {
+                throw ApiKeyIsMissing::create();
+            }
+
+            return OpenAI::factory()
+                ->withApiKey($apiKey)
+                ->withOrganization($organization)
+                ->withHttpClient(new \GuzzleHttp\Client(['timeout' => config('export-docs.request_timeout', 30)]))
+                ->make();
+        });
+
+        $this->app->alias(ClientContract::class, 'openai');
+        $this->app->alias(ClientContract::class, Client::class);
     }
 
     public function boot()
@@ -61,5 +84,19 @@ class ExportDocProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__.'/../views', 'docs');
     } //Function ends
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array<int, string>
+     */
+    public function provides(): array
+    {
+        return [
+            Client::class,
+            ClientContract::class,
+            'openai',
+        ];
+    }
 
 }

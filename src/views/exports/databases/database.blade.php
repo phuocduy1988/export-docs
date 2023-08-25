@@ -37,7 +37,7 @@
     <tbody>
     @foreach($databases as $database)
         <tr>
-            <td>{{ Str::ucfirst(Str::replace('_', ' ', $database['field'])) }}</td>
+            <td>{{$database['field_name']}}</td>
             <td>{{$database['field']}}</td>
             <td>{{$database['type']}}</td>
             <td>{{$database['key'] === 'PRI' ? '○' : ''}}</td>
