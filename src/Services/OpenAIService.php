@@ -10,8 +10,9 @@ class OpenAIService
     public static function translateString($string = '', $origin = 'en', $lang = 'ja', $context = '', $model = "gpt-3.5-turbo")
     {
         try {
-
-            return $string;
+            if(!config('export-docs.openai_api_key')) {
+                return $string;
+            }
 
             $result = OpenAI::chat()->create([
                 "model" => $model,

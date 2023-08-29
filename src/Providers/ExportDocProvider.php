@@ -48,8 +48,8 @@ class ExportDocProvider extends ServiceProvider
         ]);
 
         $this->app->singleton(ClientContract::class, static function (): Client {
-            $apiKey = config('export-docs.api_key');
-            $organization = config('export-docs.organization');
+            $apiKey = config('export-docs.openai_api_key');
+            $organization = config('export-docs.openai_organization');
 
             if (! is_string($apiKey) || ($organization !== null && ! is_string($organization))) {
                 throw ApiKeyIsMissing::create();

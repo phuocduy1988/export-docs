@@ -144,8 +144,8 @@ return [
     | and organization on your OpenAI dashboard, at https://openai.com.
     */
 
-    'api_key' => env('OPENAI_API_KEY'),
-    'organization' => env('OPENAI_ORGANIZATION'),
+    'openai_api_key' => env('OPENAI_API_KEY'),
+    'openai_organization' => env('OPENAI_ORGANIZATION'),
 
     /*
     |--------------------------------------------------------------------------
