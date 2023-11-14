@@ -41,22 +41,28 @@ class AfterSheetApiSheet
         $event->sheet->getStyle('B10:E10')->applyFromArray($this->getHeaderFormat());
         $event->sheet->getStyle('B11:E11')->getFont()->setBold(true);
 
-        $inputs = data_get($this->sheetData, 'inputs');
-        $outputs = data_get($this->sheetData, 'outputs');
-        $responses = data_get($this->sheetData, 'responses');
-        $headers = data_get($this->sheetData, 'headers');
+        $inputs = data_get($this->sheetData, 'inputs', []);
+        $outputs = data_get($this->sheetData, 'outputs', []);
+        $successResponse = data_get($this->sheetData, 'successResponses');
+        $errorResponse = data_get($this->sheetData, 'errorResponses');
+        $headers = data_get($this->sheetData, 'headers', []);
+        $responses = [$successResponse, $errorResponse];
 
-        $startHeader = 11;
-        $endHeader = count($headers) + $startHeader;
-        $event->sheet->getStyle("B{$startHeader}:E{$endHeader}")->applyFromArray($this->getRowFormat());
+        $startHeader = 10;
+        $startHeaderRow = $startHeader + 1;
+        $endHeaderRow = count($headers) + $startHeaderRow;
+
+        $event->sheet->getStyle("B{$startHeader}:E{$startHeader}")->applyFromArray($this->getHeaderFormat());
+        $event->sheet->getStyle("B" . $startHeader + 1 . ":E" . $startHeader + 1)->getFont()->setBold(true);
+        $event->sheet->getStyle("B{$startHeaderRow}:E{$endHeaderRow}")->applyFromArray($this->getRowFormat());
 
         // set format input
-        $startInputHeader = $endHeader + self::GAP_ROW;
+        $startInputHeader = $endHeaderRow + self::GAP_ROW;
         $startInputRow = $startInputHeader + 1;
         $endInputRow = count($inputs) + $startInputRow;
 
         $event->sheet->getStyle("B{$startInputHeader}:E{$startInputHeader}")->applyFromArray($this->getHeaderFormat());
-        $event->sheet->getStyle('B' . $startInputHeader + 1 . ':E' . $startInputHeader + 1)->getFont()->setBold(true);
+        $event->sheet->getStyle("B" . $startInputHeader + 1 . ":E" . $startInputHeader + 1)->getFont()->setBold(true);
         $event->sheet->getStyle("B{$startInputRow}:E{$endInputRow}")->applyFromArray($this->getRowFormat());
 
         // set format output
@@ -65,7 +71,7 @@ class AfterSheetApiSheet
         $endOutputRow = count($outputs) + $startOutputRow;
 
         $event->sheet->getStyle("B{$startOutputHeader}:E{$startOutputHeader}")->applyFromArray($this->getHeaderFormat());
-        $event->sheet->getStyle('B' . $startOutputHeader + 1 . ':E' . $startOutputHeader + 1)->getFont()->setBold(true);
+        $event->sheet->getStyle("B" . $startOutputHeader + 1 . ":E" . $startOutputHeader + 1)->getFont()->setBold(true);
         $event->sheet->getStyle("B{$startOutputRow}:E{$endOutputRow}")->applyFromArray($this->getRowFormat());
 
         // set format response

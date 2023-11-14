@@ -2,18 +2,17 @@
     <tr>
         <td></td>
         <td>ID</td>
-        <td colspan="3">=CONCATENATE(REPT("0", 3 - LEN(INDEX('{{ $refName }}'!B:B, {{$refIdx}}))), INDEX('{{ $refName }}'!B:B,
-            {{$refIdx}}))</td>
+        <td colspan="3">=CONCATENATE(REPT("0", 3 - LEN(INDEX('{{ $refName }}'!B:B, {{$refIdx}}))), INDEX('{{ $refName }}'!B:B, {{$refIdx}}))</td>
     </tr>
     <tr>
         <td></td>
         <td>Name</td>
-        <td colspan="3">{{ formatSheetName($name) }}</td>
+        <td colspan="3">{{ $name }}</td>
     </tr>
     <tr>
         <td></td>
         <td>Path</td>
-        <td colspan="3">{{ formatPath($path) }}</td>
+        <td colspan="3">{{ $path }}</td>
     </tr>
     <tr>
         <td></td>
@@ -30,7 +29,7 @@
     <tr>
         <td></td>
         <td>{{ $method }}</td>
-        <td colspan="3">{{ formatPath($path) }}</td>
+        <td colspan="3">{{ $path }}</td>
     </tr>
 </table>
 <table>
@@ -50,8 +49,8 @@
             <td></td>
             <td>{{ $header['key'] }}</td>
             <td>{{ $header['type'] }}</td>
-            <td>{{ $header['value'] }}</td>
             <td></td>
+            <td style="text-align: center">◯</td>
         </tr>
     @endforeach
 </table>
@@ -73,7 +72,7 @@
             <td>{{ $input['key'] }}</td>
             <td>{{ $input['type'] }}</td>
             <td></td>
-            <td></td>
+            <td style="text-align: center">{{ $input['required'] ? '◯' : '' }}</td>
         </tr>
     @endforeach
 </table>
@@ -91,8 +90,8 @@
     @foreach($outputs as $output)
         <tr>
             <td></td>
-            <td>{{ $output['key'] ?? '' }}</td>
-            <td>{{ $output['type'] ?? '' }}</td>
+            <td>{{ data_get($output, 'key') }}</td>
+            <td>{{ data_get($output, 'type') }}</td>
             <td colspan="2"></td>
         </tr>
     @endforeach
@@ -107,15 +106,15 @@
             <td></td>
             <td>{{ data_get($successResponses, 'text') == 'O_K' ? 'SUCCESS' : data_get($successResponses, 'text') }}</td>
             <td>{{ data_get($successResponses, 'code') }}</td>
-            <td colspan="2">{{ json_encode(data_get($successResponses, 'data', []), JSON_UNESCAPED_UNICODE)  }}</td>
+            <td colspan="2">{{ json_encode(data_get($successResponses, 'data'), JSON_UNESCAPED_UNICODE)  }}</td>
         </tr>
     @endif
     @if($errorResponses)
         <tr>
             <td></td>
-            <td>{{ data_get($errorResponses, 'text') }}</td>
+            <td>{{ \Illuminate\Support\Str::upper(data_get($errorResponses, 'text')) }}</td>
             <td>{{ data_get($errorResponses, 'code') }}</td>
-            <td colspan="2">{{ json_encode(data_get($errorResponses, 'data', []), JSON_UNESCAPED_UNICODE)  }}</td>
+            <td colspan="2">{{ json_encode(data_get($errorResponses, 'data'), JSON_UNESCAPED_UNICODE)  }}</td>
         </tr>
     @endif
 </table>

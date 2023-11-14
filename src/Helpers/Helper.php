@@ -110,7 +110,6 @@ if (!function_exists('formatSheetName')) {
         $originName = preg_replace('/{[^}]+}/', '', $originName);
         $originName = preg_replace("/[^#\w]/", '_', $originName);
         $originName = preg_replace('/_+/', '_', $originName);
-
         return rtrim($originName, '_');
     }
 }
@@ -143,5 +142,27 @@ if (!function_exists('formatPath')) {
         }
 
         return implode('/', $paths);
+    }
+}
+
+if (!function_exists('getUrlPath')) {
+    function getUrlPath($url): array|string|null
+    {
+        return preg_replace('/https?:\/\/[^\/]+\/(\w+)/i', '/$1', $url);
+    }
+}
+
+if(!function_exists('makeHttpRequest')) {
+    /**
+     * @throws Exception
+     */
+    function makeHttpRequest($url, $method, $params, $headers): \GuzzleHttp\Promise\PromiseInterface|\Illuminate\Http\Client\Response
+    {
+        return Http::accept('application/json')
+            ->timeout(5)
+            ->withHeaders($headers)
+            ->send($method, $url, [
+                'body' => json_encode($params)
+            ]);
     }
 }

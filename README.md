@@ -35,7 +35,7 @@ _Check file in storage/app/export/database/_
 
 **Export API document not release yet**
 ```bash
-php artisan docs:api-spec url-collection-postman-required --environment=path/postman-environment.json
+php artisan docs:api-spec --collection=url-collection-postman-required --environment=path/postman-environment.json
 ```
 _Note that: postman enviroment must include token login_
 _Check file in storage/app/export/api/_
