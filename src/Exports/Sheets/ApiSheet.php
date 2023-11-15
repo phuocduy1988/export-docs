@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\AfterSheet;
+use Matrix\Exception;
 use Onetech\ExportDocs\Enums\APIDefinitionSheetEnum;
 use Onetech\ExportDocs\Exports\ApiExport;
 use Onetech\ExportDocs\Utils\Request;
@@ -470,7 +471,7 @@ class ApiSheet implements WithTitle, FromView, ShouldAutoSize, WithColumnWidths,
     {
         $output = [];
         foreach ($params as $item) {
-            $output[$item['key']] = $item['value'];
+            $output[$item['key']] = $item['value'] ?? ($item['type'] ?? '');
         }
         return $output;
     }
@@ -482,6 +483,9 @@ class ApiSheet implements WithTitle, FromView, ShouldAutoSize, WithColumnWidths,
     {
         $str = $params['query'];
         preg_match('/\\(([^)]+)\\)/', $str, $matches);
+        if(!count($matches)) {
+            return [];
+        }
         $str = $matches[1];
         // Thêm nháy kép vào các phần tử
         $str = preg_replace('/(\w+):/', '"$1":', $str);

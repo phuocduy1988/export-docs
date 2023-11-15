@@ -33,13 +33,12 @@ class APISpecGeneratorCommand extends Command
             }
         }
 
-        $this->info('Generating api specs');
         $items = [];
         $this->parseAPIRequest($items, $collectionContent['item']);
         $bar = $this->output->createProgressBar(count($items));
         $filename = config('app.name').'ApiDocument'.moduleDateNow('YmdHis');
         if (is_array($items)) {
-            $this->info("Generating collection $filename");
+            $this->info("Generating API SPECs::::$filename");
             $apiExport = new ApiExport($items, $this->getEnvContent(), $bar);
             $apiExport->setFileName($filename);
             $apiExport->save();
