@@ -117,6 +117,7 @@ class DatabaseGeneratorCommand extends Command
         $exporter->store($fileName, 'local');
         $this->info(PHP_EOL);
         $this->info('Wrote docs:database to:::' . storage_path('app/' . $fileName));
+        $this->info(otTextSignature());
     }
 
     private function getFileName($database): bool|array|string

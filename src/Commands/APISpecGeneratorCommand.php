@@ -32,7 +32,6 @@ class APISpecGeneratorCommand extends Command
                 $this->error($error);
             }
         }
-
         $items = [];
         $this->parseAPIRequest($items, $collectionContent['item']);
         $bar = $this->output->createProgressBar(count($items));
@@ -43,7 +42,7 @@ class APISpecGeneratorCommand extends Command
             $apiExport->setFileName($filename);
             $apiExport->save();
             $this->info("DONE API SPECs::::$filename");
-            $this->info($this->_textSignature());
+            $this->info(otTextSignature());
         }
         $this->info("ITEMS NULL");
 
@@ -114,17 +113,5 @@ class APISpecGeneratorCommand extends Command
         }
 
         $zip->close();
-    }
-    private function _textSignature(): string
-    {
-        // ANSI Shadow
-        return <<<'SIGNATURE'
-                 ██████╗ ███╗   ██╗███████╗████████╗███████╗ ██████╗██╗  ██╗
-                ██╔═══██╗████╗  ██║██╔════╝╚══██╔══╝██╔════╝██╔════╝██║  ██║
-                ██║   ██║██╔██╗ ██║█████╗     ██║   █████╗  ██║     ███████║
-                ██║   ██║██║╚██╗██║██╔══╝     ██║   ██╔══╝  ██║     ██╔══██║
-                ╚██████╔╝██║ ╚████║███████╗   ██║   ███████╗╚██████╗██║  ██║
-                 ╚═════╝ ╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚══════╝ ╚═════╝╚═╝  ╚═╝
-        SIGNATURE;
     }
 }
