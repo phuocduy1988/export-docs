@@ -111,7 +111,9 @@ if (!function_exists('formatSheetName')) {
         $originName = preg_replace("/[^#\w]/", '_', $originName);
         $originName = preg_replace('/_+/', '_', $originName);
         $originName = str_replace('#', '', $originName);
-        return rtrim($originName, '_');
+        $originName = rtrim($originName, '_');
+        $originName = substr($originName, 0, 31);
+        return $originName;
     }
 }
 
