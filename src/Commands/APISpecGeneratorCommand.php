@@ -42,7 +42,11 @@ class APISpecGeneratorCommand extends Command
             $apiExport = new ApiExport($items, $this->getEnvContent(), $bar);
             $apiExport->setFileName($filename);
             $apiExport->save();
+            $this->info("DONE API SPECs::::$filename");
+            $this->info($this->_textSignature());
         }
+        $this->info("ITEMS NULL");
+
     }
 
     private function parseAPIRequest(&$items, $collectionContentItems, $sheetNameParent = ''): void
@@ -110,5 +114,17 @@ class APISpecGeneratorCommand extends Command
         }
 
         $zip->close();
+    }
+    private function _textSignature(): string
+    {
+        // ANSI Shadow
+        return <<<'SIGNATURE'
+                 ██████╗ ███╗   ██╗███████╗████████╗███████╗ ██████╗██╗  ██╗
+                ██╔═══██╗████╗  ██║██╔════╝╚══██╔══╝██╔════╝██╔════╝██║  ██║
+                ██║   ██║██╔██╗ ██║█████╗     ██║   █████╗  ██║     ███████║
+                ██║   ██║██║╚██╗██║██╔══╝     ██║   ██╔══╝  ██║     ██╔══██║
+                ╚██████╔╝██║ ╚████║███████╗   ██║   ███████╗╚██████╗██║  ██║
+                 ╚═════╝ ╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚══════╝ ╚═════╝╚═╝  ╚═╝
+        SIGNATURE;
     }
 }
