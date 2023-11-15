@@ -14,11 +14,11 @@
         <td>Path</td>
         <td colspan="3">{{ $path }}</td>
     </tr>
-    <tr>
-        <td></td>
-        <td>ScreenID</td>
-        <td colspan="3">=@INDEX('{{ $refName }}'!F:F, {{ $refIdx }})</td>
-    </tr>
+{{--    <tr>--}}
+{{--        <td></td>--}}
+{{--        <td>ScreenID</td>--}}
+{{--        <td colspan="3">=@INDEX('{{ $refName }}'!F:F, {{ $refIdx }})</td>--}}
+{{--    </tr>--}}
 </table>
 <br />
 <table>

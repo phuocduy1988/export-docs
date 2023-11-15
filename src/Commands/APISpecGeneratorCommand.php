@@ -37,7 +37,7 @@ class APISpecGeneratorCommand extends Command
         $items = [];
         $this->parseAPIRequest($items, $collectionContent['item']);
         $bar = $this->output->createProgressBar(count($items));
-        $filename = config('app.name').'-api-document'.moduleDateNow('Y-m-dHis');
+        $filename = config('app.name').'ApiDocument'.moduleDateNow('YmdHis');
         if (is_array($items)) {
             $this->info("Generating collection $filename");
             $apiExport = new ApiExport($items, $this->getEnvContent(), $bar);

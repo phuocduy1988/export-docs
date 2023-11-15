@@ -112,7 +112,15 @@ class ApiSheet implements WithTitle, FromView, ShouldAutoSize, WithColumnWidths,
         $host = data_get($this->sheetData, 'request.url.host.0');
         $rawUrl = data_get($this->sheetData, 'request.url.raw');
         $path = str_replace($host, '', $rawUrl);
-
+        if(!$path) {
+            if(!$path && Str::contains($host, 'graphql')) {
+                $path = data_get($this->sheetData,'request.body.graphql.query');
+                preg_match('/^(.*?)\{/', $path, $matches);
+                $path = count($matches) ? rtrim($matches[1]) : '';
+                $path = 'GraphQL: '. $path;
+            }
+            return $path;
+        }
         return formatPath($path);
     }
 
@@ -161,18 +169,19 @@ class ApiSheet implements WithTitle, FromView, ShouldAutoSize, WithColumnWidths,
     public function getInputs(): array
     {
         $requiredFields = $this->getRequireFields();
-        $params = $this->getFormParams();
+        $this->getFormInputParams($params);
         $inputs = [];
-
-        foreach ($params as $param) {
-            $key = data_get($param, 'key');
-            $value = data_get($param, 'type');
-            $inputs[] = [
-                'key' => $key,
-                'value' => $value,
-                'type' => Str::upper(gettype($value)),
-                'required' => in_array($key, $requiredFields)
-            ];
+        if($params) {
+            foreach ($params as $param) {
+                $key = data_get($param, 'key');
+                $value = data_get($param, 'type');
+                $inputs[] = [
+                    'key' => $key,
+                    'value' => $value,
+                    'type' => Str::upper(($value)),
+                    'required' => in_array($key, $requiredFields)
+                ];
+            }
         }
 
         return $inputs;
@@ -192,6 +201,23 @@ class ApiSheet implements WithTitle, FromView, ShouldAutoSize, WithColumnWidths,
         }
 
         return $params;
+    }
+
+    public function getFormInputParams(&$params = [], $formParamChild = null, $keyParent = '')
+    {
+        $formParams = $formParamChild ?? $this->getParams($this->sheetData);
+        foreach ($formParams as $key => $value) {
+            $key = $keyParent ? $keyParent. '.'. $key : $key;
+            $params[] = [
+                'key' => $key,
+                'value' => $value,
+                'description' => null,
+                'type' => Str::upper(gettype($value)),
+            ];
+            if(is_array($value)) {
+                $this->getFormInputParams($params, $value, $key);
+            }
+        }
     }
 
     public function getOutputs($successResponse): array

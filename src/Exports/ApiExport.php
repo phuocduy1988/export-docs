@@ -30,10 +30,11 @@ class ApiExport implements WithMultipleSheets
     public string $requestToken = "";
 
     private $definitionSheet;
+    private $fileSheets = [];
 
     public function __construct(array $apis, array $envs, $bar)
     {
-        info("Initializing....");
+        moduleLogInfo("Initializing....");
         $this->bar = $bar;
         $this->replacementEnvVariables($apis, $envs);
     }
@@ -42,9 +43,8 @@ class ApiExport implements WithMultipleSheets
     {
         $this->initializeFaker();
         $this->requestGetToken();
-
         info("Create sheets");
-        $fileSheets[] = $this->getDefinitionSheet();
+        $this->fileSheets[] = $this->getDefinitionSheet();
         foreach ($this->apiData as $index => $apiDatum) {
             $headers = data_get($apiDatum, "request.header");
             foreach ($headers as $headerIdx => $value) {
@@ -52,11 +52,15 @@ class ApiExport implements WithMultipleSheets
                     data_set($apiDatum, "request.header.$headerIdx.value", "Bearer $this->requestToken");
                 }
             }
+            if(count($this->fileSheets) > count($this->apiData)) {
+                break;
+            }
             $apiSheet = new ApiSheet($index, $apiDatum, $this, $this->faker);
             $this->bar->advance();
-            $fileSheets[] = $apiSheet;
+            moduleLogInfo($index);
+            $this->fileSheets[] = $apiSheet;
         }
-        return $fileSheets;
+        return $this->fileSheets;
     }
 
     public function initializeFaker(): void

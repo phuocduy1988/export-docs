@@ -31,15 +31,15 @@ class AfterSheetApiSheet
     public function __invoke(AfterSheet $event)
     {
         // set format name
-        $event->sheet->getStyle('B1:B4')->applyFromArray($this->getHeaderFormat());
-        $event->sheet->getStyle('C1:E4')->applyFromArray($this->getRowFormat());
+        $event->sheet->getStyle('B1:B3')->applyFromArray($this->getHeaderFormat());
+        $event->sheet->getStyle('C1:E3')->applyFromArray($this->getRowFormat());
         // set format uri
-        $event->sheet->getStyle('B7:E7')->applyFromArray($this->getHeaderFormat());
-        $event->sheet->getStyle('B8:E8')->applyFromArray($this->getRowFormat());
+        $event->sheet->getStyle('B6:E6')->applyFromArray($this->getHeaderFormat());
+        $event->sheet->getStyle('B7:E7')->applyFromArray($this->getRowFormat());
 
         // set format header
-        $event->sheet->getStyle('B10:E10')->applyFromArray($this->getHeaderFormat());
-        $event->sheet->getStyle('B11:E11')->getFont()->setBold(true);
+        $event->sheet->getStyle('B9:E9')->applyFromArray($this->getHeaderFormat());
+        $event->sheet->getStyle('B10:E10')->getFont()->setBold(true);
 
         $inputs = data_get($this->sheetData, 'inputs', []);
         $outputs = data_get($this->sheetData, 'outputs', []);
@@ -48,7 +48,7 @@ class AfterSheetApiSheet
         $headers = data_get($this->sheetData, 'headers', []);
         $responses = [$successResponse, $errorResponse];
 
-        $startHeader = 10;
+        $startHeader = 9;
         $startHeaderRow = $startHeader + 1;
         $endHeaderRow = count($headers) + $startHeaderRow;
 
